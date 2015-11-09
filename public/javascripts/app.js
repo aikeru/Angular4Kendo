@@ -27,6 +27,8 @@ webpackJsonp([1],{
 	
 	var _angular2Angular2 = __webpack_require__(16);
 	
+	//a2 lifecycle https://github.com/angular/angular/blob/master/modules/angular2/lifecycle_hooks.ts
+	
 	var KendoComponent = (function () {
 	    _createClass(KendoComponent, null, [{
 	        key: 'parameters',
@@ -35,18 +37,21 @@ webpackJsonp([1],{
 	        }
 	    }]);
 	
-	    function KendoComponent(elementRef) {
-	        _classCallCheck(this, _KendoComponent);
+	    function KendoComponent(elementRef, widgetName) {
+	        _classCallCheck(this, KendoComponent);
 	
-	        console.log('ctor');
-	        this._element = $(elementRef.nativeElement).find('input')[0];
+	        //this._element = $(elementRef.nativeElement).children()[0];
+	        this._element = elementRef.nativeElement;
+	        this.widgetName = widgetName; //should be overridden by inheritors
+	        if (!widgetName) {
+	            console.error('widgetName is required for KendoComponent');
+	        }
 	    }
 	
 	    _createClass(KendoComponent, [{
 	        key: 'render',
 	        value: function render() {
-	            console.log('render');
-	            this._kWidget = jQuery(this._element)[this._widgetName](this.bound);
+	            this._kWidget = jQuery(this._element)[this.widgetName](this.bound);
 	            this._kendoKeys = [];
 	            for (var key in this._kWidget) {
 	                this._kendoKeys.push(key);
@@ -55,9 +60,8 @@ webpackJsonp([1],{
 	    }, {
 	        key: 'onChanges',
 	        value: function onChanges(changes) {
-	            console.log('onchange');
-	            if (!this._widgetName) {
-	                this.initialize();
+	            if (!this._kendoKeys || !this._kendoKeys.length) {
+	                this.render();
 	            }
 	            if (changes.bound) {
 	                outer: for (var propKey in changes.bound) {
@@ -75,80 +79,142 @@ webpackJsonp([1],{
 	            this.render();
 	        }
 	    }, {
-	        key: 'initialize',
-	        value: function initialize() {
-	            console.log('init');
-	            this._kendoKeys = [];
-	            if (this.role) {
-	                for (var widget in kendo.ui) {
-	                    if (widget.toUpperCase() === this.role.toUpperCase()) {
-	                        this._widgetName = 'kendo' + widget;
-	                    }
-	                }
-	            } else {
-	                console.error('role is required for KendoComponent');
-	            }
-	            if (!this._widgetName) {
-	                console.error('Could not find widget for ' + this.role + ' or role not specified.');
-	            } else {
-	                this.render();
-	            }
-	        }
-	    }, {
 	        key: 'onInit',
 	        value: function onInit() {
-	            console.log('oninit');
-	            this.initialize();
+	            this.render();
 	        }
 	    }, {
 	        key: 'onDestroy',
 	        value: function onDestroy() {
-	            console.log('ondest');
 	            var kElement = jQuery(this._element);
-	            kElement.data(this._widgetName).destroy();
+	            kElement.data(this.widgetName).destroy();
 	            kElement.empty();
 	        }
 	    }]);
 	
-	    var _KendoComponent = KendoComponent;
-	    KendoComponent = (0, _angular2Angular2.View)({
-	        template: '<input type="text" />'
-	    })(KendoComponent) || KendoComponent;
-	    KendoComponent = (0, _angular2Angular2.Component)({
-	        selector: 'kendocomponent',
-	        inputs: ['bound', 'role'],
-	        bindings: [_angular2Angular2.ElementRef]
-	    })(KendoComponent) || KendoComponent;
 	    return KendoComponent;
 	})();
 	
 	exports.KendoComponent = KendoComponent;
 	;
 	
-	var KendoDropDownList = (function (_KendoComponent2) {
-	    _inherits(KendoDropDownList, _KendoComponent2);
+	function createCommonKendoComponent(selector, widgetName) {
+	    var CommonComponent = (function (_KendoComponent) {
+	        _inherits(CommonComponent, _KendoComponent);
 	
-	    function KendoDropDownList(elementRef) {
-	        _classCallCheck(this, _KendoDropDownList);
+	        function CommonComponent(elementRef) {
+	            _classCallCheck(this, _CommonComponent);
 	
-	        _get(Object.getPrototypeOf(_KendoDropDownList.prototype), 'constructor', this).call(this, elementRef);
-	    }
+	            _get(Object.getPrototypeOf(_CommonComponent.prototype), 'constructor', this).call(this, elementRef, widgetName);
+	        }
 	
-	    var _KendoDropDownList = KendoDropDownList;
-	    KendoDropDownList = (0, _angular2Angular2.View)({
-	        template: '<input type="text" />'
-	    })(KendoDropDownList) || KendoDropDownList;
-	    KendoDropDownList = (0, _angular2Angular2.Component)({
-	        selector: 'kendo-dropdownlist',
-	        inputs: ['bound', 'role'],
-	        bindings: [_angular2Angular2.ElementRef]
-	    })(KendoDropDownList) || KendoDropDownList;
-	    return KendoDropDownList;
-	})(KendoComponent);
+	        var _CommonComponent = CommonComponent;
+	        CommonComponent = (0, _angular2Angular2.View)({ template: '<ng-content></ng-content>' })(CommonComponent) || CommonComponent;
+	        CommonComponent = (0, _angular2Angular2.Component)({
+	            selector: selector,
+	            inputs: ['bound', 'role'],
+	            bindings: [_angular2Angular2.ElementRef]
+	        })(CommonComponent) || CommonComponent;
+	        return CommonComponent;
+	    })(KendoComponent);
 	
+	    return CommonComponent;
+	}
+	
+	var KendoDropDownList = createCommonKendoComponent('[data-role=dropdownlist]', 'kendoDropDownList');
 	exports.KendoDropDownList = KendoDropDownList;
-
-	//a2 lifecycle https://github.com/angular/angular/blob/master/modules/angular2/lifecycle_hooks.ts
+	var KendoDatePicker = createCommonKendoComponent('[data-role=datepicker]', 'kendoDatePicker');
+	exports.KendoDatePicker = KendoDatePicker;
+	var KendoAutoComplete = createCommonKendoComponent('[data-role=autocomplete]', 'kendoAutoComplete');
+	exports.KendoAutoComplete = KendoAutoComplete;
+	var KendoButton = createCommonKendoComponent('[data-role=button]', 'kendoButton');
+	exports.KendoButton = KendoButton;
+	var KendoColorPalette = createCommonKendoComponent('[data-role=colorpalette]', 'kendoColorPalette');
+	exports.KendoColorPalette = KendoColorPalette;
+	var KendoColorPicker = createCommonKendoComponent('[data-role=colorpicker]', 'kendoColorPicker');
+	exports.KendoColorPicker = KendoColorPicker;
+	var KendoDateTimePicker = createCommonKendoComponent('[data-role=datetimepicker]', 'kendoDateTimePicker');
+	exports.KendoDateTimePicker = KendoDateTimePicker;
+	var KendoEditor = createCommonKendoComponent('[data-role=editor]', 'kendoEditor');
+	exports.KendoEditor = KendoEditor;
+	var KendoMaskedTextBox = createCommonKendoComponent('[data-role=maskedtextbox]', 'kendoMaskedTextBox');
+	exports.KendoMaskedTextBox = KendoMaskedTextBox;
+	var KendoMultiSelect = createCommonKendoComponent('[data-role=multiselect]', 'kendoMultiSelect');
+	exports.KendoMultiSelect = KendoMultiSelect;
+	var KendoNumericTextBox = createCommonKendoComponent('[data-role=numerictextbox]', 'kendoNumericTextBox');
+	exports.KendoNumericTextBox = KendoNumericTextBox;
+	var KendoSlider = createCommonKendoComponent('[data-role=slider]', 'kendoSlider');
+	exports.KendoSlider = KendoSlider;
+	var KendoTimePicker = createCommonKendoComponent('[data-role=timepicker]', 'kendoTimePicker');
+	exports.KendoTimePicker = KendoTimePicker;
+	var KendoUpload = createCommonKendoComponent('[data-role=upload]', 'kendoUpload');
+	exports.KendoUpload = KendoUpload;
+	var KendoMobileSwitch = createCommonKendoComponent('[data-role=mobileswitch]', 'kendoMobileSwitch');
+	exports.KendoMobileSwitch = KendoMobileSwitch;
+	var KendoMobileButtonGroup = createCommonKendoComponent('[data-role=mobilebuttongroup]', 'kendoMobileButtonGroup');
+	exports.KendoMobileButtonGroup = KendoMobileButtonGroup;
+	var KendoMenu = createCommonKendoComponent('[data-role=menu]', 'kendoMenu');
+	exports.KendoMenu = KendoMenu;
+	var KendoPanelBar = createCommonKendoComponent('[data-role=panelbar]', 'kendoPanelBar');
+	exports.KendoPanelBar = KendoPanelBar;
+	var KendoTabStrip = createCommonKendoComponent('[data-role=tabstrip]', 'kendoTabStrip');
+	exports.KendoTabStrip = KendoTabStrip;
+	var KendoToolBar = createCommonKendoComponent('[data-role=toolbar]', 'kendoToolBar');
+	exports.KendoToolBar = KendoToolBar;
+	var KendoTreeView = createCommonKendoComponent('[data-role=treeview]', 'kendoTreeView');
+	exports.KendoTreeView = KendoTreeView;
+	var KendoCalendar = createCommonKendoComponent('[data-role=calendar]', 'kendoCalendar');
+	exports.KendoCalendar = KendoCalendar;
+	var KendoGantt = createCommonKendoComponent('[data-role=gantt]', 'kendoGantt');
+	exports.KendoGantt = KendoGantt;
+	var KendoScheduler = createCommonKendoComponent('[data-role=scheduler]', 'kendoScheduler');
+	exports.KendoScheduler = KendoScheduler;
+	var KendoGrid = createCommonKendoComponent('[data-role=grid]', 'kendoGrid');
+	exports.KendoGrid = KendoGrid;
+	var KendoListView = createCommonKendoComponent('[data-role=listview]', 'kendoListView');
+	exports.KendoListView = KendoListView;
+	var KendoPager = createCommonKendoComponent('[data-role=pager]', 'kendoPager');
+	exports.KendoPager = KendoPager;
+	var KendoPivotGrid = createCommonKendoComponent('[data-role=pivotgrid]', 'kendoPivotGrid');
+	exports.KendoPivotGrid = KendoPivotGrid;
+	var KendoPivotConfigurator = createCommonKendoComponent('[data-role=pivotconfigurator]', 'kendoPivotConfigurator');
+	exports.KendoPivotConfigurator = KendoPivotConfigurator;
+	var KendoTreeList = createCommonKendoComponent('[data-role=treelist]', 'kendoTreeList');
+	exports.KendoTreeList = KendoTreeList;
+	var KendoNotification = createCommonKendoComponent('[data-role=notification]', 'kendoNotification');
+	exports.KendoNotification = KendoNotification;
+	var KendoResponsivePanel = createCommonKendoComponent('[data-role=responsivepanel]', 'kendoResponsivePanel');
+	exports.KendoResponsivePanel = KendoResponsivePanel;
+	var KendoSplitter = createCommonKendoComponent('[data-role=splitter]', 'kendoSplitter');
+	exports.KendoSplitter = KendoSplitter;
+	var KendoToolTip = createCommonKendoComponent('[data-role=tooltip]', 'kendoToolTip');
+	exports.KendoToolTip = KendoToolTip;
+	var KendoWindow = createCommonKendoComponent('[data-role=window]', 'kendoWindow');
+	exports.KendoWindow = KendoWindow;
+	var KendoDraggable = createCommonKendoComponent('[data-role=draggable]', 'kendoDraggable');
+	exports.KendoDraggable = KendoDraggable;
+	var KendoDropTarget = createCommonKendoComponent('[data-role=droptarget]', 'kendoDropTarget');
+	exports.KendoDropTarget = KendoDropTarget;
+	var KendoProgressBar = createCommonKendoComponent('[data-role=progressbar]', 'kendoProgressBar');
+	exports.KendoProgressBar = KendoProgressBar;
+	var KendoSortable = createCommonKendoComponent('[data-role=sortable]', 'kendoSortable');
+	exports.KendoSortable = KendoSortable;
+	var KendoChart = createCommonKendoComponent('[data-role=chart]', 'kendoChart');
+	exports.KendoChart = KendoChart;
+	var KendoBarCode = createCommonKendoComponent('[data-role=barcode]', 'kendoBarCode');
+	exports.KendoBarCode = KendoBarCode;
+	var KendoQRCode = createCommonKendoComponent('[data-role=qrcode]', 'kendoQRCode');
+	exports.KendoQRCode = KendoQRCode;
+	var KendoLinearGuage = createCommonKendoComponent('[data-role=linearguage]', 'kendoLinearGuage');
+	exports.KendoLinearGuage = KendoLinearGuage;
+	var KendoRadialGuage = createCommonKendoComponent('[data-role=radialguage]', 'kendoRadialGuage');
+	exports.KendoRadialGuage = KendoRadialGuage;
+	var KendoDiagram = createCommonKendoComponent('[data-role=diagram]', 'kendoDiagram');
+	exports.KendoDiagram = KendoDiagram;
+	var KendoMap = createCommonKendoComponent('[data-role=map]', 'kendoMap');
+	exports.KendoMap = KendoMap;
+	var KendoFlatColorPicker = createCommonKendoComponent('[data-role=flatcolorpicker]', 'kendoFlatColorPicker');
+	exports.KendoFlatColorPicker = KendoFlatColorPicker;
 
 /***/ },
 
@@ -171,13 +237,20 @@ webpackJsonp([1],{
 	
 	        this.options = [{ text: 'Foo', value: '1' }, { text: 'Bar', value: '2' }, { text: 'Bazz', value: '3' }];
 	        this.selectedValue = '1';
+	        this.selectedDate = '1/1/2005';
 	        this.onDropDownChange = this.onDropDownChange.bind(this);
+	        this.onDateChange = this.onDateChange.bind(this);
 	    }
 	
 	    _createClass(AppComponent, [{
 	        key: 'onDropDownChange',
 	        value: function onDropDownChange(e) {
 	            this.selectedValue = e.sender.value();
+	        }
+	    }, {
+	        key: 'onDateChange',
+	        value: function onDateChange(e) {
+	            this.selectedDate = e.sender.value();
 	        }
 	    }, {
 	        key: 'selectBar',
@@ -188,8 +261,8 @@ webpackJsonp([1],{
 	
 	    var _AppComponent = AppComponent;
 	    AppComponent = (0, _angular2Angular2.View)({
-	        template: '\n    <div>\n        <kendo-dropdownlist [bound]="{dataSource: options,\n            dataTextField: \'text\',\n            dataValueField: \'value\',\n            index: 0,\n            change: onDropDownChange,\n            value: selectedValue }"\n         [role]="\'dropdownlist\'"></kendo-dropdownlist>\n        <!--<kendocomponent [bound]="{dataSource: options,-->\n            <!--dataTextField: \'text\',-->\n            <!--dataValueField: \'value\',-->\n            <!--index: 0,-->\n            <!--change: onDropDownChange,-->\n            <!--value: selectedValue }"-->\n         <!--[role]="\'dropdownlist\'"></kendocomponent>-->\n    </div>\n    <div>\n        <div>Currently selected value : {{selectedValue}}</div>\n        <button (click)="selectBar()">Select Bar</button>\n    </div>\n    ',
-	        directives: [_KendoComponentEs6.KendoDropDownList]
+	        template: '\n    <div>\n        <input data-role="dropdownlist" [bound]="{dataSource: options,\n            dataTextField: \'text\',\n            dataValueField: \'value\',\n            index: 0,\n            change: onDropDownChange,\n            value: selectedValue }" />\n    </div>\n    <div>\n        <input data-role="datepicker" [bound]="{\n            value: selectedDate,\n            change: onDateChange\n        }" />\n    </div>\n    <div>\n        <div>Currently selected value : {{selectedValue}}</div>\n        <div>Currently selected date : {{selectedDate}}</div>\n        <button data-role="button" (click)="selectBar()">Select Bar</button>\n    </div>\n    ',
+	        directives: [_KendoComponentEs6.KendoDropDownList, _KendoComponentEs6.KendoDatePicker, _KendoComponentEs6.KendoButton]
 	    })(AppComponent) || AppComponent;
 	    AppComponent = (0, _angular2Angular2.Component)({
 	        selector: 'my-app'
