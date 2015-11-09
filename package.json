@@ -1,14 +1,12 @@
 {
-  "name": "angular2-kendo",
+  "name": "angular2kendo",
   "version": "1.0.0",
   "description": "",
   "main": "Gulpfile.js",
   "dependencies": {
     "angular2": "^2.0.0-alpha.45",
     "babel-core": "^5.6.21",
-    "browserify": "^12.0.1",
     "del": "^2.0.2",
-    "browserify-shim": "^3.8.11",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
     "node-static": "^0.7.7",

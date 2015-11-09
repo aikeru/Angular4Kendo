@@ -24,3 +24,7 @@ directives: [KendoDropDownList, KendoDatePicker, KendoButton]
 <br/>
 * The Angular 2 selectors use ```data-role```, just like Kendo MVVM does, ie: ```data-role="dropdownlist"```
 * The Angular 2 components use 'bound', since 'bind' is not valid, ie: ```[bound]="{ value: someValue }"```
+
+### How to build this?
+
+This project uses webpack. With webpack's cli installed, simply execute ```webpack``` in the root of the project.
