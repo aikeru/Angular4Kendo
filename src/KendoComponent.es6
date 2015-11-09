@@ -16,9 +16,11 @@ export class KendoComponent {
         return [[ElementRef]];
     }
     constructor(elementRef) {
+        console.log('ctor');
         this._element = $(elementRef.nativeElement).find('input')[0];
     }
     render() {
+        console.log('render');
         this._kWidget = jQuery(this._element)[this._widgetName](this.bound);
         this._kendoKeys = [];
         for(var key in this._kWidget) {
@@ -26,6 +28,7 @@ export class KendoComponent {
         }
     }
     onChanges(changes) {
+        console.log('onchange');
         if(!this._widgetName) {
             this.initialize();
         }
@@ -45,6 +48,7 @@ export class KendoComponent {
         this.render();
     }
     initialize() {
+        console.log('init');
         this._kendoKeys = [];
         if(this.role) {
             for (var widget in kendo.ui) {
@@ -62,12 +66,27 @@ export class KendoComponent {
         }
     }
     onInit() {
+        console.log('oninit');
         this.initialize();
     }
     onDestroy() {
+        console.log('ondest');
         var kElement = jQuery(this._element);
         kElement.data(this._widgetName).destroy();
         kElement.empty();
     }
 };
 
+@Component({
+    selector: 'kendo-dropdownlist',
+    inputs: ['bound', 'role'],
+    bindings: [ ElementRef ]
+})
+@View({
+    template: `<input type="text" />`
+})
+export class KendoDropDownList extends KendoComponent {
+    constructor(elementRef) {
+        super(elementRef);
+    }
+}

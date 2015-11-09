@@ -1,5 +1,5 @@
 import { Component, View, bootstrap, Input } from 'angular2/angular2';
-import { KendoComponent } from './KendoComponent.es6';
+import { KendoDropDownList } from './KendoComponent.es6';
 
 @Component({
     selector: 'my-app'
@@ -7,20 +7,20 @@ import { KendoComponent } from './KendoComponent.es6';
 @View({
     template: `
     <div>
-        <kendocomponent [bound]="{dataSource: options,
+        <kendo-dropdownlist [bound]="{dataSource: options,
             dataTextField: 'text',
             dataValueField: 'value',
             index: 0,
             change: onDropDownChange,
             value: selectedValue }"
-         [role]="'dropdownlist'"></kendocomponent>
+         [role]="'dropdownlist'"></kendo-dropdownlist>
     </div>
     <div>
         <div>Currently selected value : {{selectedValue}}</div>
         <button (click)="selectBar()">Select Bar</button>
     </div>
     `,
-    directives: [KendoComponent]
+    directives: [KendoDropDownList]
 })
 class AppComponent {
     constructor() {
