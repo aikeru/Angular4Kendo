@@ -7,10 +7,16 @@ import { KendoComponent } from './KendoComponent.es6';
 @View({
     template: `
     <div>
-        <kendocomponent [bound]="boundStuff" [role]="'dropdownlist'"></kendocomponent>
+        <kendocomponent [bound]="{dataSource: options,
+            dataTextField: 'text',
+            dataValueField: 'value',
+            index: 0,
+            change: onDropDownChange,
+            value: selectedValue }"
+         [role]="'dropdownlist'"></kendocomponent>
     </div>
     <div>
-        <div>Currently selected value : {{boundStuff.value}}</div>
+        <div>Currently selected value : {{selectedValue}}</div>
         <button (click)="selectBar()">Select Bar</button>
     </div>
     `,
@@ -18,33 +24,19 @@ import { KendoComponent } from './KendoComponent.es6';
 })
 class AppComponent {
     constructor() {
-        this._data = [
+        this.options = [
             { text: 'Foo', value: '1' },
             { text: 'Bar', value: '2' },
             { text: 'Bazz', value: '3' }
         ];
-
-        this.boundStuff = {
-            dataTextField: "text",
-            dataValueField: "value",
-            dataSource: this._data,
-            index: 0,
-            change: this.onDropDownChange.bind(this),
-            value: '1'
-        }
+        this.selectedValue = '1';
+        this.onDropDownChange = this.onDropDownChange.bind(this);
     }
     onDropDownChange(e) {
-        this.boundStuff.value = e.sender.value();
+        this.selectedValue = e.sender.value();
     }
     selectBar(boundStuff) {
-        this.boundStuff = {
-          dataTextField: "text",
-            dataValueField: "value",
-            dataSource: this._data,
-            index: 0,
-            change: this.onDropDownChange.bind(this),
-            value: '2'
-        };
+        this.selectedValue = '2';
     }
 }
 

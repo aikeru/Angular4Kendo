@@ -181,40 +181,26 @@ webpackJsonp([1],{
 	    function AppComponent() {
 	        _classCallCheck(this, _AppComponent);
 	
-	        this._data = [{ text: 'Foo', value: '1' }, { text: 'Bar', value: '2' }, { text: 'Bazz', value: '3' }];
-	
-	        this.boundStuff = {
-	            dataTextField: "text",
-	            dataValueField: "value",
-	            dataSource: this._data,
-	            index: 0,
-	            change: this.onDropDownChange.bind(this),
-	            value: '1'
-	        };
+	        this.options = [{ text: 'Foo', value: '1' }, { text: 'Bar', value: '2' }, { text: 'Bazz', value: '3' }];
+	        this.selectedValue = '1';
+	        this.onDropDownChange = this.onDropDownChange.bind(this);
 	    }
 	
 	    _createClass(AppComponent, [{
 	        key: 'onDropDownChange',
 	        value: function onDropDownChange(e) {
-	            this.boundStuff.value = e.sender.value();
+	            this.selectedValue = e.sender.value();
 	        }
 	    }, {
 	        key: 'selectBar',
 	        value: function selectBar(boundStuff) {
-	            this.boundStuff = {
-	                dataTextField: "text",
-	                dataValueField: "value",
-	                dataSource: this._data,
-	                index: 0,
-	                change: this.onDropDownChange.bind(this),
-	                value: '2'
-	            };
+	            this.selectedValue = '2';
 	        }
 	    }]);
 	
 	    var _AppComponent = AppComponent;
 	    AppComponent = (0, _angular2Angular2.View)({
-	        template: '\n    <div>\n        <kendocomponent [bound]="boundStuff" [role]="\'dropdownlist\'"></kendocomponent>\n    </div>\n    <div>\n        <div>Currently selected value : {{boundStuff.value}}</div>\n        <button (click)="selectBar()">Select Bar</button>\n    </div>\n    ',
+	        template: '\n    <div>\n        <kendocomponent [bound]="{dataSource: options,\n            dataTextField: \'text\',\n            dataValueField: \'value\',\n            index: 0,\n            change: onDropDownChange,\n            value: selectedValue }"\n         [role]="\'dropdownlist\'"></kendocomponent>\n    </div>\n    <div>\n        <div>Currently selected value : {{selectedValue}}</div>\n        <button (click)="selectBar()">Select Bar</button>\n    </div>\n    ',
 	        directives: [_KendoComponentEs6.KendoComponent]
 	    })(AppComponent) || AppComponent;
 	    AppComponent = (0, _angular2Angular2.Component)({
