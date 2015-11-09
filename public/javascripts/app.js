@@ -35,52 +35,25 @@ webpackJsonp([1],{
 	        _classCallCheck(this, _KendoComponent);
 	
 	        this._element = $(elementRef.nativeElement).find('input')[0];
-	        console.log('Keeping it on 2');
-	        //this.bound = {};
-	        //this.role = '';
-	        //this.test = 0;
 	    }
 	
 	    _createClass(KendoComponent, [{
 	        key: 'render',
 	        value: function render() {
-	            console.log('Rendering!!!', this.role, this._widgetName);
 	            this._kWidget = jQuery(this._element)[this._widgetName](this.bound);
+	            this._kendoKeys = [];
 	            for (var key in this._kWidget) {
-	                //TODO: check prototype stuff
 	                this._kendoKeys.push(key);
 	            }
 	        }
 	    }, {
-	        key: 'afterContentInit',
-	        value: function afterContentInit() {
-	            console.log('after1');
-	        }
-	    }, {
-	        key: 'afterContentChecked',
-	        value: function afterContentChecked() {
-	            console.log('afterContentChecked');
-	        }
-	    }, {
-	        key: 'afterViewInit',
-	        value: function afterViewInit() {
-	            console.log('afterViewinit');
-	        }
-	    }, {
-	        key: 'afterViewChecked',
-	        value: function afterViewChecked() {
-	            console.log('afterViewchecked');
-	        }
-	    }, {
 	        key: 'onChanges',
 	        value: function onChanges(changes) {
-	            console.log('onChanging!!');
 	            if (!this._widgetName) {
 	                this.initialize();
 	            }
 	            if (changes.bound) {
 	                outer: for (var propKey in changes.bound) {
-	                    //TODO: yadda
 	                    for (var kendoKeyIndex = 0; kendoKeyIndex < this._kendoKeys.length; kendoKeyIndex++) {
 	                        var kendoKey = this._kendoKeys[kendoKeyIndex];
 	                        if (propKey === kendoKey) {
@@ -95,11 +68,6 @@ webpackJsonp([1],{
 	            this.render();
 	        }
 	    }, {
-	        key: 'doCheck',
-	        value: function doCheck() {
-	            console.log('docheck');
-	        }
-	    }, {
 	        key: 'initialize',
 	        value: function initialize() {
 	            this._kendoKeys = [];
@@ -110,13 +78,11 @@ webpackJsonp([1],{
 	                    }
 	                }
 	            } else {
-	                console.error('Expected role to be truthy!?');
+	                console.error('role is required for KendoComponent');
 	            }
 	            if (!this._widgetName) {
-	                //throw 'Could not find widget for ' + this.role + ' or role not specified.';
-	                console.error('Could not find widget');
+	                console.error('Could not find widget for ' + this.role + ' or role not specified.');
 	            } else {
-	                console.log('Rendering as', this._widgetName);
 	                this.render();
 	            }
 	        }
@@ -125,19 +91,6 @@ webpackJsonp([1],{
 	        value: function onInit() {
 	            this.initialize();
 	        }
-	    }, {
-	        key: 'onCheck',
-	        value: function onCheck() {
-	            console.log('oncheck');
-	        }
-	    }, {
-	        key: 'onAllChangesDone',
-	        value: function onAllChangesDone() {
-	            console.log('onallchangesdone');
-	        }
-	    }, {
-	        key: 'onChange',
-	        value: function onChange(changes) {}
 	    }, {
 	        key: 'onDestroy',
 	        value: function onDestroy() {
@@ -161,6 +114,8 @@ webpackJsonp([1],{
 	
 	exports.KendoComponent = KendoComponent;
 	;
+	
+	//a2 lifecycle https://github.com/angular/angular/blob/master/modules/angular2/lifecycle_hooks.ts
 
 /***/ },
 

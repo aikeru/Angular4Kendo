@@ -1,6 +1,8 @@
 import { Component, View, Inject, Input, Output } from 'angular2/angular2';
 import { ElementRef } from 'angular2/angular2';
 
+//a2 lifecycle https://github.com/angular/angular/blob/master/modules/angular2/lifecycle_hooks.ts
+
 @Component({
     selector: 'kendocomponent',
     inputs: ['bound', 'role'],
@@ -15,39 +17,20 @@ export class KendoComponent {
     }
     constructor(elementRef) {
         this._element = $(elementRef.nativeElement).find('input')[0];
-        console.log('Keeping it on 2');
-        //this.bound = {};
-        //this.role = '';
-        //this.test = 0;
     }
     render() {
-        console.log('Rendering!!!', this.role, this._widgetName);
         this._kWidget = jQuery(this._element)[this._widgetName](this.bound);
+        this._kendoKeys = [];
         for(var key in this._kWidget) {
-            //TODO: check prototype stuff
             this._kendoKeys.push(key);
         }
     }
-    afterContentInit() {
-        console.log('after1');
-    }
-    afterContentChecked() {
-        console.log('afterContentChecked');
-    }
-    afterViewInit() {
-        console.log('afterViewinit');
-    }
-    afterViewChecked() {
-        console.log('afterViewchecked');
-    }
     onChanges(changes) {
-        console.log('onChanging!!');
         if(!this._widgetName) {
             this.initialize();
         }
         if(changes.bound) {
             outer: for(var propKey in changes.bound) {
-                //TODO: yadda
                 for(var kendoKeyIndex = 0; kendoKeyIndex < this._kendoKeys.length; kendoKeyIndex++) {
                     var kendoKey = this._kendoKeys[kendoKeyIndex];
                     if(propKey === kendoKey) {
@@ -61,9 +44,6 @@ export class KendoComponent {
         }
         this.render();
     }
-    doCheck() {
-        console.log('docheck');
-    }
     initialize() {
         this._kendoKeys = [];
         if(this.role) {
@@ -73,27 +53,16 @@ export class KendoComponent {
                 }
             }
         } else {
-            console.error('Expected role to be truthy!?');
+            console.error('role is required for KendoComponent');
         }
         if(!this._widgetName) {
-            //throw 'Could not find widget for ' + this.role + ' or role not specified.';
-            console.error('Could not find widget');
+            console.error('Could not find widget for ' + this.role + ' or role not specified.');
         } else {
-            console.log('Rendering as', this._widgetName);
             this.render();
         }
     }
     onInit() {
         this.initialize();
-    }
-    onCheck() {
-        console.log('oncheck');
-    }
-    onAllChangesDone() {
-        console.log('onallchangesdone');
-    }
-    onChange(changes) {
-
     }
     onDestroy() {
         var kElement = jQuery(this._element);
