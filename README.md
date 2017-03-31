@@ -1,10 +1,10 @@
-# Angular 2 Kendo
+# Angular 4 Kendo
 
-A series of Angular 2 Components enabling the use of Kendo UI with Angular 2. Last updated with Angular alpha.45, written in ES6.
+A series of Angular 4 Components enabling the use of Kendo UI with Angular 4. Last updated with Angular 4.0.1, written in ES6+.
 
-### Why Angular 2 Kendo?
+### Why Angular 4 Kendo?
 
-Because if you're going Angular, and one of your requirements is to use Kendo UI Widgets, the lack of integration between Kendo UI and Angular 2 shouldn't be a barrier to picking Angular 2.
+Because if you're going Angular, and one of your requirements is to use Kendo UI Widgets, the lack of integration between Kendo UI and Angular 4 shouldn't be a barrier to picking Angular 4.
 
 ### How to use this?
 
@@ -21,8 +21,8 @@ directives: [KendoDropDownList, KendoDatePicker, KendoButton]
 ```javascript
 <input data-role="datepicker" [bound]="{ value: dateValue, change: onDatePickerChange }" />
 ```
-* The Angular 2 selectors use ```data-role```, just like Kendo MVVM does, ie: ```data-role="dropdownlist"```
-* The Angular 2 components use 'bound', since 'bind' is not valid, ie: ```[bound]="{ value: someValue }"```
+* The Angular 4 selectors use ```data-role```, just like Kendo MVVM does, ie: ```data-role="dropdownlist"```
+* The Angular 4 components use 'bound', since 'bind' is not valid, ie: ```[bound]="{ value: someValue }"```
 
 ### How to build this?
 
@@ -32,7 +32,7 @@ This project uses webpack. With webpack's cli installed, simply execute ```webpa
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Michael K Snead
+Copyright (c) 2017 Michael K Snead
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
