@@ -17,12 +17,17 @@ import { KendoDropDownList, KendoDatePicker, KendoButton } from './KendoComponen
 ```javascript
 directives: [KendoDropDownList, KendoDatePicker, KendoButton]
 ```
+* Include them in your bootstrapped module's declarations
+```javascript
+declarations: [ AppComponent, KendoDropDownList, KendoDatePicker, KendoButton, ... ],
+```
+
 * Reference the component in your view
 ```javascript
 <input data-role="datepicker" [bound]="{ value: dateValue, change: onDatePickerChange }" />
 ```
 * The Angular 4 selectors use ```data-role```, just like Kendo MVVM does, ie: ```data-role="dropdownlist"```
-* The Angular 4 components use 'bound', since 'bind' is not valid, ie: ```[bound]="{ value: someValue }"```
+* The Angular 4 components use 'bound' to configure components instead of 'bind', ie: ```[bound]="{ value: someValue }"```
 
 ### How to build this?
 
