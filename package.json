@@ -1,23 +1,36 @@
 {
   "name": "angular2kendo",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "Gulpfile.js",
   "dependencies": {
+    "@angular/animations": "^4.0.1",
+    "@angular/common": "^4.0.1",
+    "@angular/compiler": "^4.0.1",
+    "@angular/compiler-cli": "^4.0.1",
+    "@angular/core": "^4.0.1",
+    "@angular/forms": "^4.0.1",
+    "@angular/http": "^4.0.1",
+    "@angular/platform-browser": "^4.0.1",
+    "@angular/platform-browser-dynamic": "^4.0.1",
+    "@angular/platform-server": "^4.0.1",
+    "@angular/router": "^4.0.1",
     "@reactivex/rxjs": "5.0.0-alpha.4",
-    "angular2": "^2.0.0-alpha.45",
     "babel-core": "^5.6.21",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
     "node-static": "^0.7.7",
+    "reflect-metadata": "^0.1.2",
+    "rxjs": "^5.0.1",
+    "typescript": "^2.2.2",
     "webpack": "^1.12.3",
     "webpack-stream": "^2.1.1",
-    "reflect-metadata": "^0.1.2",
-    "zone.js": "^0.5.8"
+    "zone.js": "^0.8.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack && node app.js"
   },
   "author": "",
   "license": "ISC",

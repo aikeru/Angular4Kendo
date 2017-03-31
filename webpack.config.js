@@ -18,14 +18,14 @@ module.exports = {
     },
 
     entry: {
-        'angular2': [
+        'angular': [
             '@reactivex/rxjs',
             'zone.js',
             'reflect-metadata',
-            'angular2/angular2',
-            'angular2/core',
-            'angular2/router',
-            'angular2/http'
+            '@angular/core',
+            '@angular/common',
+            '@angular/http',
+            '@angular/router'
         ],
         'app': [
             './src/app.es6'
@@ -75,9 +75,9 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'angular2',
+            name: 'angular',
             minChunks: Infinity,
-            filename: 'angular2.js'
+            filename: 'angular.js'
         })/*,
         new webpack.CommonsChunkPlugin({
             name: 'common',

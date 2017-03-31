@@ -1,5 +1,5 @@
-import { Component, View, Inject, Input, Output } from 'angular2/angular2';
-import { ElementRef } from 'angular2/angular2';
+import { Component, Inject, Input, Output } from '@angular/core';
+import { ElementRef } from '@angular/core';
 
 //a2 lifecycle https://github.com/angular/angular/blob/master/modules/angular2/lifecycle_hooks.ts
 export class KendoComponent {
@@ -21,7 +21,7 @@ export class KendoComponent {
             this._kendoKeys.push(key);
         }
     }
-    onChanges(changes) {
+    ngOnChanges(changes) {
         if(!this._kendoKeys || !this._kendoKeys.length) {
             this.render();
         }
@@ -40,10 +40,10 @@ export class KendoComponent {
         }
         this.render();
     }
-    onInit() {
+    ngOnInit() {
         this.render();
     }
-    onDestroy() {
+    ngOnDestroy() {
         var kElement = jQuery(this._element);
         kElement.data(this.widgetName).destroy();
         kElement.empty();
@@ -54,9 +54,9 @@ function createCommonKendoComponent(selector, widgetName) {
     @Component({
         selector: selector,
         inputs: ['bound', 'role'],
-        bindings: [ElementRef]
+        bindings: [ElementRef],
+        template: '<ng-content></ng-content>'
     })
-    @View({ template: '<ng-content></ng-content>' })
     class CommonComponent extends KendoComponent {
         constructor(elementRef) {
             super(elementRef, widgetName);

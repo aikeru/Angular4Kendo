@@ -1,10 +1,11 @@
-import { Component, View, bootstrap, Input } from 'angular2/angular2';
+import { Component, bootstrap, Input } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
 import { KendoDropDownList, KendoDatePicker, KendoButton } from './KendoComponent.es6';
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
 
 @Component({
-    selector: 'my-app'
-})
-@View({
+    selector: 'my-app',
     template: `
     <div>
         <input data-role="dropdownlist" [bound]="{dataSource: options,
@@ -51,7 +52,14 @@ class AppComponent {
     }
 }
 
+class AppModule {}
+AppModule.annotations = [
+  new NgModule({ imports: [ BrowserModule ],
+    declarations: [ AppComponent, KendoDropDownList, KendoDatePicker, KendoButton ],
+    bootstrap: [ AppComponent ] })
+]
+
 document.addEventListener('DOMContentLoaded', function() {
-  bootstrap(AppComponent);
+  platformBrowserDynamic().bootstrapModule(AppModule);
 });
 
